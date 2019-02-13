@@ -12,6 +12,18 @@ module "this" {
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| example | Example description | string | `` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| example | Example description |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 Tests
@@ -70,6 +82,6 @@ grip
     ```bash
     grip --browser
     ```
-  
+
 
 [1]: https://rvm.io/rvm/install
