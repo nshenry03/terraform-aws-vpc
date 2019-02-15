@@ -24,7 +24,9 @@ This will destroy any existing test resources, create the resources afresh, run 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| aws\_allowed\_account\_ids | - | list | `[ "845868186186" ]` | no |
 | region | - | string | `eu-west-1` | no |
+| user | - | string | `user` | no |
 
 ## Outputs
 
