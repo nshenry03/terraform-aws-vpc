@@ -158,6 +158,11 @@ variable "intra_subnets" {
   default     = []
 }
 
+variable "intra_subnet_suffix" {
+  description = "Suffix to append to intra subnets name"
+  default     = "intra"
+}
+
 variable "intra_route_table_tags" {
   description = "Additional tags for the intra route tables"
   default     = {}

@@ -33,6 +33,7 @@ module "vpc" {
 | external\_nat\_ip\_ids | List of EIP IDs to be assigned to the NAT Gateways (used in combination with reuse_nat_ips) | list | `[]` | no |
 | igw\_tags | Additional tags for the internet gateway | map | `{}` | no |
 | intra\_route\_table\_tags | Additional tags for the intra route tables | map | `{}` | no |
+| intra\_subnet\_suffix | Suffix to append to intra subnets name | string | `intra` | no |
 | intra\_subnet\_tags | Additional tags for the intra subnets | map | `{}` | no |
 | intra\_subnets | A list of intra subnets | list | `[]` | no |
 | name | Name to be used on all the resources as identifier | string | `` | no |

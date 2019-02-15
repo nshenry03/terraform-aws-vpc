@@ -98,6 +98,13 @@ resource "aws_route" "public_internet_gateway" {
   }
 }
 
+resource "aws_route_table_association" "public" {
+  count = "${var.create_vpc && length(var.public_subnets) > 0 ? length(var.public_subnets) : 0}"
+
+  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
+  route_table_id = "${aws_route_table.public.id}"
+}
+
 # ---------------
 # private subnet
 # ---------------
@@ -166,7 +173,7 @@ resource "aws_route_table" "database" {
 
   vpc_id = "${local.vpc_id}"
 
-  tags = "${merge(var.tags, var.database_route_table_tags, map("Name", "${var.name}-${var.database_subnet_suffix}"))}"
+  tags = "${merge(map("Name", format("%s-${var.database_subnet_suffix}-%s", var.name, element(var.azs, count.index))), var.tags, var.database_route_table_tags)}"
 }
 
 resource "aws_route" "database_nat_gateway" {
@@ -184,7 +191,7 @@ resource "aws_route_table_association" "database" {
   count = "${var.create_vpc && length(var.database_subnets) > 0 ? length(var.database_subnets) : 0}"
 
   subnet_id      = "${element(aws_subnet.database.*.id, count.index)}"
-  route_table_id = "${element(coalescelist(aws_route_table.database.*.id, aws_route_table.private.*.id), count.index)}"
+  route_table_id = "${element(aws_route_table.database.*.id, count.index)}"
 }
 
 # -------------
@@ -197,20 +204,20 @@ resource "aws_subnet" "intra" {
   cidr_block        = "${element(var.intra_subnets, count.index)}"
   availability_zone = "${element(var.azs, count.index)}"
 
-  tags = "${merge(map("Name", format("%s-intra-%s", var.name, element(var.azs, count.index))), var.tags, var.intra_subnet_tags)}"
+  tags = "${merge(map("Name", format("%s-${var.intra_subnet_suffix}-%s", var.name, element(var.azs, count.index))), var.tags, var.intra_subnet_tags)}"
 }
 
 resource "aws_route_table" "intra" {
-  count = "${var.create_vpc && length(var.intra_subnets) > 0 ? 1 : 0}"
+  count = "${var.create_vpc && length(var.intra_subnets) > 0 ? length(var.intra_subnets) : 0}"
 
   vpc_id = "${local.vpc_id}"
 
-  tags = "${merge(map("Name", "${var.name}-intra"), var.tags, var.intra_route_table_tags)}"
+  tags = "${merge(map("Name", format("%s-${var.intra_subnet_suffix}-%s", var.name, element(var.azs, count.index))), var.tags, var.intra_route_table_tags)}"
 }
 
 resource "aws_route_table_association" "intra" {
   count = "${var.create_vpc && length(var.intra_subnets) > 0 ? length(var.intra_subnets) : 0}"
 
   subnet_id      = "${element(aws_subnet.intra.*.id, count.index)}"
-  route_table_id = "${element(aws_route_table.intra.*.id, 0)}"
+  route_table_id = "${element(aws_route_table.intra.*.id, count.index)}"
 }

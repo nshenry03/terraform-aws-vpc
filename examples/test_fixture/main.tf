@@ -6,12 +6,14 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 module "vpc" {
-  source          = "../.."
-  name            = "test-example"
-  cidr            = "10.0.0.0/16"
-  azs             = ["${data.aws_availability_zones.available.names[0]}", "${data.aws_availability_zones.available.names[1]}"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+  source           = "../.."
+  name             = "${var.user}-vpc-mod"
+  cidr             = "10.0.0.0/16"
+  azs              = ["${data.aws_availability_zones.available.names[0]}", "${data.aws_availability_zones.available.names[1]}"]
+  private_subnets  = ["10.0.10.0/24", "10.0.11.0/24"]
+  public_subnets   = ["10.0.20.0/24", "10.0.21.0/24"]
+  database_subnets = ["10.0.30.0/24", "10.0.31.0/24"]
+  intra_subnets    = ["10.0.40.0/24", "10.0.41.0/24"]
 
   tags = {
     Owner       = "${var.user}"
