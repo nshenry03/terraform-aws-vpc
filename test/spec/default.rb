@@ -72,6 +72,10 @@ zone_names.each do |az|
           name: "tag:Name",
           values: ["#{vpc_name}-#{az}"],
         },
+        {
+          name: "state",
+          values: ["available"],
+        },
       ]
     }
   )
